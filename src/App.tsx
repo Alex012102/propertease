@@ -1,12 +1,16 @@
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
+
+
+import LandingPage from "./pages/landing-page/LandingPage";
+import Auth from "./pages/auth/Auth";
 
 function App() {
   return (
-    <>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/auth" element={<Auth />} />
+    </Routes>
   );
 }
 
