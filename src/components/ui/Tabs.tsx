@@ -16,7 +16,6 @@ export interface PortalTypes {
 }
 
 const Tabs: React.FC<PortalTypes> = ({ activeTab, setActiveTab }) => {
-  console.log(activeTab);
 
   return (
     <div className="flex flex-1 justify-between bg-brand-charcoal-dark px-2 pt-4">

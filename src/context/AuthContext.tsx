@@ -22,8 +22,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       .eq("user_id", userId)
       .single();
 
-    console.log("Returned Data:", data);
-
     if (error) {
       console.error("Error loading profile:", error.message);
       return { id: userId, email };
@@ -32,21 +30,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return {
       id: userId,
       email,
-      name: data?.first_name ?? undefined,
+      first_name: data?.first_name ?? undefined,
       profilePicture: data?.profile_picture ?? undefined,
     };
   };
 
   // Restore session and listen for changes
   useEffect(() => {
-    console.log("Starting initialization");
 
     const initSession = async () => {
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
-      console.log("Performed getSession:", session);
 
       if (session?.user) {
         const profile = await fetchProfile(

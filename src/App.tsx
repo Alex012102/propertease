@@ -19,6 +19,7 @@ function App() {
     // Map pathname to tab labels
     const pathToTab: Record<string, string> = {
       "/app/": "Dashboard",
+      "/app": "Dashboard",
       "/app/maintenance": "Maintenance",
       "/app/properties": "Properties",
       "/app/receipts": "Receipts",
