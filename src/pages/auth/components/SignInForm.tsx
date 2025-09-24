@@ -1,44 +1,32 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState, useEffect, type Dispatch, type SetStateAction } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "../../../api/supabaseClient";
+import { useAuth } from "../../../context/AuthContext"; // 👈 import context
 
 interface Props {
-  setMessage: Dispatch<SetStateAction<string>>
+  setMessage: Dispatch<SetStateAction<string>>;
 }
 
 const SignInForm: React.FC<Props> = ({ setMessage }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { signIn, user } = useAuth(); // 👈 get signIn from context
 
-  const handleSubmit = async (e: any) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  useEffect(() => {
+    if (user) navigate("/app");
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // console.log("🚀 Attempting sign in...");
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    // console.log("🧾 Full sign-in response:", { data, error });
-
-    if (error) {
-      // console.error("❌ Sign-in error:", error.message);
-      setMessage(error.message);
-      return;
-    }
-
-    if (data?.session) {
-      // console.log("✅ Session created:", data.session);
-      navigate("/app/");
-    } else {
-      console.warn("⚠️ No session returned even though no error");
+    try {
+      await signIn(email, password); // 👈 delegate auth logic to context
+      navigate("/app");
+    } catch (error: any) {
+      console.error("❌ Sign-in error:", error);
+      setMessage(error.message || "Sign-in failed");
     }
   };
-
-  supabase.auth.getSession().then(({ data, error }) => {
-    console.log("🔍 Manual session check outside useEffect:", { data, error });
-  });
 
   return (
     <form onSubmit={handleSubmit} className="rounded-lg">

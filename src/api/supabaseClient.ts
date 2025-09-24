@@ -1,8 +1,15 @@
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+  import.meta.env.VITE_SUPABASE_URL!,
+  import.meta.env.VITE_SUPABASE_ANON_KEY!,
+  {
+    auth: {
+      persistSession: true, // ✅ makes session survive reloads
+      autoRefreshToken: true, // ✅ keeps session valid
+      detectSessionInUrl: true, // ✅ handles OAuth flows
+    },
+  }
 );
 
 export default supabase;
