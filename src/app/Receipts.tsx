@@ -2,16 +2,16 @@ import React from "react";
 
 import { useAuth } from "../context/AuthContext";
 
-const Dashboard: React.FC = () => {
+const Receipts: React.FC = () => {
   const { user } = useAuth();
 
   console.log(user);
 
   return (
     <div>
-      <p>This is the dashboard.</p>
+      <p>This is the Receipts.</p>
     </div>
   );
 };
 
-export default Dashboard;
+export default Receipts;
