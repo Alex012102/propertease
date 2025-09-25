@@ -18,8 +18,8 @@ const Portal: React.FC = () => {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-y-auto">
         {/* Top bar with toggle buttons */}
-        <div className="flex justify-between items-center p-4 bg-white shadow-md md:hidden z-10">
-          <button onClick={() => setIsSidebarOpen(true)}>
+        <div className="flex justify-between md:justify-end items-center p-4 bg-white shadow-md xl:hidden z-10">
+          <button className="md:hidden" onClick={() => setIsSidebarOpen(true)}>
             <Menu size={24} />
           </button>
           <button onClick={() => setIsNotificationsOpen(true)}>

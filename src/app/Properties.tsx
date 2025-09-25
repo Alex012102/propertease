@@ -4,7 +4,7 @@ import supabase from "../api/supabaseClient";
 
 import { useAuth } from "../context/AuthContext";
 import PropertyCard from "../components/PropertyCard";
-import PropertyModal from "../components/modals/PropertyModal";
+import PropertyModal from "../components/modals/property-modal/PropertyModal";
 import LoadingModal from "../components/modals/LoadingModal";
 
 const Properties: React.FC = () => {
@@ -39,27 +39,27 @@ const Properties: React.FC = () => {
 
   if (loading) return <LoadingModal />;
 
-  console.log("Property Data:", properties)
+  console.log("Property Data:", properties);
 
   return (
-    <div className="flex">
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.property_id}
-            property={property}
-            onClick={setSelectedProperty}
-          />
-        ))}
+    <>
+    <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+      {properties.map((property) => (
+        <PropertyCard
+          key={property.property_id}
+          property={property}
+          onClick={setSelectedProperty}
+        />
+      ))}
 
-        {selectedProperty && (
-          <PropertyModal
-            property={selectedProperty}
-            onClose={() => setSelectedProperty(null)}
-          />
-        )}
-      </div>
+      {selectedProperty && (
+        <PropertyModal
+          property={selectedProperty}
+          onClose={() => setSelectedProperty(null)}
+        />
+      )}
     </div>
+    </>
   );
 };
 

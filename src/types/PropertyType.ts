@@ -6,7 +6,7 @@ export interface Property {
   city: string;
   state: string;
   zip_code: string;
-  photo: string;
+  photos: string[];
   description: string;
   date_created: string;
   last_updated: string;

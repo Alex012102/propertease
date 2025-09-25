@@ -1,3 +1,13 @@
 @import "tailwindcss";
 @tailwind utilities;
 @config "../tailwind.config.js";
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar track for Firefox */
+.hide-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE & Edge */
+}
