@@ -1,55 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo } from "react";
 import PropertyModalHeader from "./PropertyModalHeader";
-
-import {
-  sumUnitTotals,
-  type PropertyTotals,
-} from "../../../../utils/sumUnitTotals";
+import DataTable from "../../../ui/DataTable";
 
 import type { Property } from "../../../../types/PropertyType";
 import type { Unit } from "../../../../types/UnitTypes";
+import type { PropertyTotals } from "../../../../utils/sumUnitTotals";
 
 interface PropertyModalContentTypes {
   property: Property;
   units: Unit[];
+  totals: PropertyTotals | null;
 }
 
 const PropertyModalContent: React.FC<PropertyModalContentTypes> = ({
   property,
   units,
+  totals,
 }) => {
-  const [propertyDetails, setPropertyDetails] = useState<PropertyTotals | null>(
-    null
+  const totalUnits = useMemo(
+    () => (units.length > 1 ? units.length : null),
+    [units]
   );
-  const [totalUnits, setTotalUnits] = useState<number | null>(null);
-
-  console.log("Units:", units);
-
-  useEffect(() => {
-    if (units.length === 1) {
-      const totals = sumUnitTotals(units);
-      setPropertyDetails(totals);
-      setTotalUnits(null);
-    } else {
-      const totals = sumUnitTotals(units);
-      setPropertyDetails(totals);
-      setTotalUnits(units.length);
-    }
-  }, [units]);
-
-  console.log("totalUnits:", totalUnits);
-  console.log("propertyDetails:", propertyDetails);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 space-y-15">
       <PropertyModalHeader
         totalUnits={totalUnits}
         property={property}
-        propertyDetails={propertyDetails}
+        propertyDetails={totals}
       />
-      <span className="text-lg font-medium">Description</span>
-      <p>{property.description}</p>
-      <div className="h-[100rem]"></div>
+
+      <div>
+        <span className="text-lg font-medium">Description</span>
+        <p className="px-4">{property.description}</p>
+      </div>
+
+      {units.length > 1 && (
+        <DataTable
+          rows={units}
+          hiddenKeys={[
+            "unit_id",
+            "property_id",
+            "photos",
+            "lease_start_date",
+            "lease_end_date",
+            "amenities",
+            "user_id",
+          ]}
+          columnOrder={[
+            "unit_number",
+            "beds",
+            "baths",
+            "sqft",
+            "rent",
+            "occupied",
+          ]}
+          formatValue={(key, value) => {
+            if (typeof value === "boolean") return value ? "Yes" : "No";
+            if (value === null) return "-";
+            return value;
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -1,51 +1,26 @@
-import React, { useState, useEffect } from "react";
-import type { Property } from "../types/PropertyType";
-import supabase from "../api/supabaseClient";
-
+import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import PropertyCard from "../components/PropertyCard";
+import { useUserProperties } from "../api/hooks/useUserProperties";
+
+import type { Property } from "../types/PropertyType";
+import PropertyCardContainer from "../components/PropertyCardContainer";
 import PropertyModal from "../components/modals/property-modal/PropertyModal";
 import LoadingModal from "../components/modals/LoadingModal";
 
 const Properties: React.FC = () => {
   const { user } = useAuth();
-  const [properties, setProperties] = useState<Property[]>([]);
+  const { properties, loading, error } = useUserProperties(user?.id);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null
   );
-  const [loading, setLoading] = useState<boolean>(true);
-
-  console.log(user);
-
-  useEffect(() => {
-    if (!user?.id) return;
-
-    const fetchProperties = async () => {
-      const { data, error } = await supabase
-        .from("properties")
-        .select("*")
-        .eq("user_id", user.id);
-
-      if (error) {
-        console.error("Error fetching properties:", error);
-      } else {
-        setProperties(data);
-      }
-      setLoading(false);
-    };
-
-    fetchProperties();
-  }, [user]);
 
   if (loading) return <LoadingModal />;
-
-  console.log("Property Data:", properties);
+  if (error) return <p className="text-red-500">Failed to load properties.</p>;
 
   return (
-    <>
     <div className="grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-      {properties.map((property) => (
-        <PropertyCard
+      {properties.map((property: Property) => (
+        <PropertyCardContainer
           key={property.property_id}
           property={property}
           onClick={setSelectedProperty}
@@ -59,7 +34,6 @@ const Properties: React.FC = () => {
         />
       )}
     </div>
-    </>
   );
 };
 

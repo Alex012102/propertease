@@ -7,7 +7,7 @@ const LoadingModal = () => {
     >
       <div className="w-[15rem]">
         <Loading />
-        <p className="mt-3 ms-1">Loading...</p>
+        <p className="mt-3 text-2xl font-semibold text-white ms-1">Loading...</p>
       </div>
     </div>
   );

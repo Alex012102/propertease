@@ -1,11 +1,13 @@
-import type React from "react";
-import { useState, useEffect } from "react";
-import type { Property } from "../../../types/PropertyType";
-import type { Unit } from "../../../types/UnitTypes";
+import React, { useState } from "react";
+import { ChevronLeft, Pencil, Save, X } from "lucide-react";
+import IconButton from "../../ui/IconButton";
 import PictureCarousel from "./components/PhotoCarousel";
 import PropertyModalContent from "./components/PropertyModalContent";
-import supabase from "../../../api/supabaseClient";
+import PropertyEditForm from "../../forms/PropertyEditForm";
 import LoadingModal from "../LoadingModal";
+
+import { usePropertyUnits } from "../../../api/hooks/usePropertyUnits";
+import type { Property } from "../../../types/PropertyType";
 
 interface PropertyModalProps {
   property: Property | null;
@@ -13,35 +15,13 @@ interface PropertyModalProps {
 }
 
 const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose }) => {
-  const [units, setUnits] = useState<Unit[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [editMode, setEditMode] = useState(false);
 
   if (!property) return null;
 
-  console.log("Selected Property:", property);
-
-  useEffect(() => {
-    const fetchUnits = async () => {
-      const { data, error } = await supabase
-        .from("units")
-        .select("*")
-        .eq("property_id", property.property_id);
-
-      if (error) {
-        console.error("Error fetching units:", error);
-      } else {
-        setUnits(data);
-      }
-      setLoading(false);
-    };
-
-    fetchUnits();
-  }, [property?.property_id]);
+  const { units, totals, loading } = usePropertyUnits(property.property_id);
 
   if (loading) return <LoadingModal />;
-
-  console.log("Property Data:", property);
-  console.log("Unit Data:", units);
 
   return (
     <div
@@ -52,16 +32,46 @@ const PropertyModal: React.FC<PropertyModalProps> = ({ property, onClose }) => {
         className="flex flex-col overflow-auto hide-scrollbar bg-white h-full lg:w-[60vw] p-6 rounded-lg space-y-4 shadow-xl relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <PictureCarousel images={property.photos ?? []} />
+        {/* Header */}
+        <div className="flex justify-between">
+          <IconButton onClick={onClose}>
+            <ChevronLeft />
+          </IconButton>
 
-        <PropertyModalContent property={property} units={units} />
+          {!editMode ? (
+            <IconButton onClick={() => setEditMode(true)}>
+              <Pencil size={"19px"} />
+            </IconButton>
+          ) : (
+            <div className="flex space-x-2">
+              <IconButton onClick={() => setEditMode(false)}>
+                <X size={"19px"} />
+              </IconButton>
+              <IconButton form="property-edit-form" type="submit">
+                <Save size={"19px"} />
+              </IconButton>
+            </div>
+          )}
+        </div>
 
-        <button
-          className="mt-4 px-4 py-2 bg-brand-secondary-tint text-white rounded"
-          onClick={onClose}
-        >
-          Close
-        </button>
+        {/* Content */}
+        {editMode ? (
+          <PropertyEditForm
+            property={property}
+            units={units}
+            onCancel={() => setEditMode(false)}
+            onSaved={() => setEditMode(false)} // refresh could also be added
+          />
+        ) : (
+          <>
+            <PictureCarousel images={property.photos ?? []} />
+            <PropertyModalContent
+              property={property}
+              units={units}
+              totals={totals}
+            />
+          </>
+        )}
       </div>
     </div>
   );
