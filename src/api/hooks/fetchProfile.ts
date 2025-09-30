@@ -22,7 +22,7 @@ export const fetchProfile = async (
   return {
     id: userId,
     email,
-    name: data?.first_name ?? undefined,
+    displayName: data?.display_name ?? undefined,
     profilePicture: data?.profile_picture ?? undefined,
   };
 };

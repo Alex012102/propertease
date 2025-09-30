@@ -9,6 +9,7 @@ interface ButtonProps {
   color?: ButtonColors;
   to?: string;
   onClick?: () => void;
+  type?: "button" | "submit";
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -16,6 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   color = "secondary",
   to,
   onClick,
+  type = "button",
 }) => {
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={`rounded py-1.5 px-3 border border-transparent text-center text-sm transition-all shadow-sm hover:shadow focus:shadow-none active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ${buttonColors[color]}`}
-      type="button"
+      type={type}
       onClick={handleClick}
     >
       {text}

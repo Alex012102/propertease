@@ -20,8 +20,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       .from("accounts")
       .select("*")
       .eq("user_id", userId)
+      .range(0, 11)
       .single();
-
     if (error) {
       console.error("Error loading profile:", error.message);
       return { id: userId, email };
@@ -30,14 +30,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return {
       id: userId,
       email,
-      first_name: data?.first_name ?? undefined,
+      bio: data?.bio ?? undefined,
+      displayName: data?.display_name ?? undefined,
       profilePicture: data?.profile_picture ?? undefined,
     };
   };
 
   // Restore session and listen for changes
   useEffect(() => {
-
     const initSession = async () => {
       const {
         data: { session },

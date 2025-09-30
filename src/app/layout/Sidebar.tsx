@@ -44,11 +44,7 @@ const Sidebar: React.FC<BarTypes> = ({ isOpen, setIsOpen, children }) => {
           alt="propertease"
         />
         <ProfilePhoto />
-        {user && (
-          <p className="mt-2">
-            {user.first_name} {user.last_name}
-          </p>
-        )}
+        {user && <p className="mt-2 font-semibold">{user.displayName}</p>}
         <Navbar />
         <div className="flex-grow" />
         <p

@@ -24,9 +24,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     <img
       src={property.photos ? property.photos[0] : PropertyPlaceHolderIMG}
       alt={property.street_address}
-      className="overflow-hidden h-7/10 rounded-t-xl"
+      className="overflow-hidden h-48 w-full rounded-t-xl"
     />
-    <div className="p-3">
+    <div className="p-2">
       <h3 className="font-medium">{property.street_address}</h3>
       <span className="text-gray-500">
         {property.city}, {property.state} {property.zip_code}

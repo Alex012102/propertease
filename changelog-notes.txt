@@ -1,0 +1,12 @@
+Next Commit : Profile Modal display, functionality and updates.
+
+Changes:
+- Updated fetch profile data
+- Updated Auth Types to include bio, displayName, and format of data variables.
+- Changed notifications bar z index from z-40 to z-30
+- Made functional and editable ProfileModal
+
+
+
+Notes: 
+- Make MODAL component and reformat existing modals

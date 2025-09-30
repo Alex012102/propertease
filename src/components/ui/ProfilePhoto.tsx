@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-// import ProfileModal from "../modals/ProfileModal";
+import ProfileModal from "../modals/ProfileModal";
 
 const ProfilePhoto = () => {
   const { user } = useAuth();
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   if (!user) return null;
 
   return (
     <>
       <div
-        // onClick={() => setIsOpen(true)}
+        onClick={() => setIsOpen(true)}
         className="hidden md:flex m-auto mt-6 w-[6rem] p-[.15em] bg-white shadow rounded-full cursor-pointer"
       >
         <img
@@ -21,7 +21,7 @@ const ProfilePhoto = () => {
         />
       </div>
 
-      {/* <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} /> */}
+      <ProfileModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
 };

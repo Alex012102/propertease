@@ -127,11 +127,11 @@ const PropertyEditForm: React.FC<PropertyEditFormProps> = ({
               onChange={(val) => handleUnitChange(i, "rent", val)}
             />
             <LabeledInput
-  label="Occupied"
-  type="checkbox"
-  value={unit.occupied ?? false}
-  onChange={(val) => handleUnitChange(i, "occupied", val)}
-/>
+              label="Occupied"
+              type="checkbox"
+              value={unit.occupied ?? false}
+              onChange={(val) => handleUnitChange(i, "occupied", val)}
+            />
           </div>
         ))}
       </div>

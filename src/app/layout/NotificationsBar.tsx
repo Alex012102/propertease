@@ -29,7 +29,7 @@ const NotificationsBar: React.FC<BarTypes> = ({ isOpen, setIsOpen }) => {
       <div
         className={`fixed top-0 right-0 h-full bg-brand-charcoal-shade text-white transition-all duration-300
         ${isOpen ? "w-80" : "w-0 xl:w-80"}
-        overflow-hidden z-40 flex flex-col xl:relative xl:flex-shrink-0`}
+        overflow-hidden z-30 flex flex-col xl:relative xl:flex-shrink-0`}
       >
         <div className="h-full flex flex-col">
           <button
